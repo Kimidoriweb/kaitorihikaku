@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -6,7 +7,6 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from concurrent.futures import ThreadPoolExecutor
 import time
-import os
 import shutil
 import logging
 
@@ -145,4 +145,5 @@ def get_screenshot(site_name, url, search_box_xpath, result_xpath, jan_code):
 if __name__ == '__main__':
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # PORT環境変数を取得し、デフォルトは5000
+    app.run(host='0.0.0.0', port=port, debug=True)
