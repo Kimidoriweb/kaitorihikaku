@@ -3,24 +3,21 @@
 # Install Chrome
 if [ $RENDER ]; then
     echo "Installing Chrome for Render.com"
-    curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome-stable_current_amd64.deb
-    dpkg -i google-chrome-stable_current_amd64.deb || apt-get -fy install
-    apt-get install -y libxss1 libappindicator1 libindicator7
-    rm google-chrome-stable_current_amd64.deb
-else
-    echo "Skipping Chrome installation since it's not running on Render.com"
+    apt-get update
+    apt-get install -y wget gnupg2
+    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+    apt-get update
+    apt-get install -y google-chrome-stable
 fi
 
-# Install chromedriver
+# Install ChromeDriver
 if [ $RENDER ]; then
     echo "Installing ChromeDriver for Render.com"
-    CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
-    CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
+    CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d '.' -f 1)
+    CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
     wget -N "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
-    unzip chromedriver_linux64.zip
-    mv -f chromedriver /usr/local/bin/chromedriver
-    chmod +x /usr/local/bin/chromedriver
+    unzip chromedriver_linux64.zip -d /usr/local/bin/
     rm chromedriver_linux64.zip
-else
-    echo "Skipping ChromeDriver installation since it's not running on Render.com"
+    chmod +x /usr/local/bin/chromedriver
 fi
