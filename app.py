@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     screenshots = []
-    if request.method == 'POST']:
+    if request.method == 'POST':
         jan_code = request.form['jan_code']
         clear_upload_folder(app.config['UPLOAD_FOLDER'])
         with ThreadPoolExecutor(max_workers=5) as executor:
