@@ -1,0 +1,57 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+label {
+  margin-right: 10px;
+}
+
+input {
+  margin-right: 10px;
+  width: 100%;
+  max-width: 300px;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.screenshots {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px; /* 要素間のスペース */
+}
+
+.screenshot {
+  text-align: center;
+}
+
+.screenshot img {
+  width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.screenshot h3 {
+  text-align: center;
+  margin: 5px 0;
+}
+
+@media (min-width: 600px) {
+  .screenshots {
+    grid-template-columns: 1fr; /* 2列にする */
+  }
+}
