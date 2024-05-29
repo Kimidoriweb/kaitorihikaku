@@ -27,6 +27,10 @@
           alt="{{ screenshot.site_name }}"
         />
       </div>
+      {% else %}
+      <p>
+        {{ screenshot.site_name }}のスクリーンショットを取得できませんでした。
+      </p>
       {% endif %} {% endfor %}
     </div>
     {% endif %}

@@ -107,6 +107,7 @@ def get_screenshot(site_name, url, search_box_xpath, result_xpath, jan_code):
 
     try:
         # サイトにアクセス
+        logging.info(f"Accessing site: {url}")
         driver.get(url)
         time.sleep(2)  # ページが完全に読み込まれるまで少し待つ
 
@@ -132,6 +133,7 @@ def get_screenshot(site_name, url, search_box_xpath, result_xpath, jan_code):
         filename = f'screenshot_{url.split("//")[1].split(".")[0]}_{int(time.time())}.png'
         screenshot_path = os.path.join(app.config['UPLOAD_FOLDER'], filename).replace("\\", "/")
         search_content.screenshot(screenshot_path)
+        logging.info(f"Screenshot saved: {screenshot_path}")
         return {"site_name": site_name, "screenshot_path": screenshot_path}
     except Exception as e:
         logging.error(f"Failed to get screenshot for {site_name} from {url}. Reason: {e}")
