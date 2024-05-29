@@ -105,9 +105,9 @@ def get_screenshot(site_name, url, search_box_xpath, result_xpath, jan_code):
 
     if os.getenv("RENDER"):
         # Render.com環境用の設定
-        options.binary_location = "/usr/bin/google-chrome"
+        options.binary_location = os.path.expanduser("~/chrome/google-chrome")
     
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome(service=ChromeService(os.path.expanduser("~/chromedriver/chromedriver")), options=options)
 
     try:
         # サイトにアクセス
