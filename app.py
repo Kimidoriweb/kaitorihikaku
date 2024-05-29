@@ -33,7 +33,7 @@ def index():
             for future in futures:
                 try:
                     result = future.result()
-                    if result:
+                    if result:  # Noneでない場合のみ追加
                         screenshots.append(result)
                 except Exception as e:
                     logging.error(f"Error occurred: {e}")
@@ -99,7 +99,7 @@ def get_screenshot_wiki(jan_code):
 def get_screenshot(site_name, url, search_box_xpath, result_xpath, jan_code):
     # WebDriverのセットアップ
     options = webdriver.ChromeOptions()
-    # options.add_argument('--headless')
+    options.add_argument('--headless')  # ヘッドレスモードを有効にする
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     
@@ -108,6 +108,11 @@ def get_screenshot(site_name, url, search_box_xpath, result_xpath, jan_code):
     try:
         # サイトにアクセス
         driver.get(url)
+        time.sleep(2)  # ページが完全に読み込まれるまで少し待つ
+
+        # ページのソースを保存してデバッグに利用
+        with open(f"{app.config['UPLOAD_FOLDER']}/page_source_{site_name}.html", "w", encoding='utf-8') as f:
+            f.write(driver.page_source)
 
         # 必要なクッキーを追加（例としてCSRFトークンを追加）
         # driver.add_cookie({"name": "Eccube-Csrf-Token", "value": "your-csrf-token"})
