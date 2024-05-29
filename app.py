@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     screenshots = []
-    if request.method == 'POST':
+    if request.method == 'POST']:
         jan_code = request.form['jan_code']
         clear_upload_folder(app.config['UPLOAD_FOLDER'])
         with ThreadPoolExecutor(max_workers=5) as executor:
@@ -102,6 +102,10 @@ def get_screenshot(site_name, url, search_box_xpath, result_xpath, jan_code):
     options.add_argument('--headless')  # ヘッドレスモードを有効にする
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
+
+    if os.getenv("RENDER"):
+        # Render.com環境用の設定
+        options.binary_location = "/usr/bin/google-chrome"
     
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
