@@ -3,12 +3,10 @@
 # Install Chrome
 if [ $RENDER ]; then
     echo "Installing Chrome for Render.com"
-    apt-get update
-    apt-get install -y wget gnupg2
-    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
-    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-    apt-get update
-    apt-get install -y google-chrome-stable
+    mkdir -p /usr/local/share/chrome
+    wget -q -O /usr/local/share/chrome/chrome-linux.zip https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    unzip -q /usr/local/share/chrome/chrome-linux.zip -d /usr/local/share/chrome/
+    ln -s /usr/local/share/chrome/google-chrome /usr/bin/google-chrome
 fi
 
 # Install ChromeDriver
