@@ -4,7 +4,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 from concurrent.futures import ThreadPoolExecutor
 import time
 import shutil
@@ -103,11 +102,9 @@ def get_screenshot(site_name, url, search_box_xpath, result_xpath, jan_code):
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
 
-    if os.getenv("RENDER"):
-        # Render.com環境用の設定
-        options.binary_location = os.path.expanduser("~/chrome/google-chrome")
+    options.binary_location = os.getenv("GOOGLE_CHROME_BIN")
     
-    driver = webdriver.Chrome(service=ChromeService(os.path.expanduser("~/chromedriver/chromedriver")), options=options)
+    driver = webdriver.Chrome(executable_path=os.getenv("CHROMEDRIVER_PATH"), options=options)
 
     try:
         # サイトにアクセス
