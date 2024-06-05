@@ -1,47 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Set the directory where Chrome will be installed
-CHROME_DIR="$HOME/chrome"
-CHROMEDRIVER_DIR="$HOME/chromedriver"
+# Install Chrome
+mkdir -p /opt/render/chrome
+cd /opt/render/chrome
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+apt-get update
+apt-get install -y ./google-chrome-stable_current_amd64.deb
 
-# Create directories
-mkdir -p $CHROME_DIR $CHROMEDRIVER_DIR
+# Install ChromeDriver
+CHROME_DRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`
+wget -N http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip -P ~/
+unzip ~/chromedriver_linux64.zip -d ~/
+rm ~/chromedriver_linux64.zip
+mv -f ~/chromedriver /usr/local/bin/chromedriver
+chmod 0755 /usr/local/bin/chromedriver
 
-# Download and install Chrome
-if [ $RENDER ]; then
-    echo "Installing Chrome for Render.com"
-    wget -q -O $CHROME_DIR/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    ar x $CHROME_DIR/google-chrome-stable_current_amd64.deb -C $CHROME_DIR
-    tar -xvf $CHROME_DIR/data.tar.xz -C $CHROME_DIR
-    mv $CHROME_DIR/opt/google/chrome/* $CHROME_DIR/
-    rm -rf $CHROME_DIR/opt
-    rm -f $CHROME_DIR/google-chrome-stable_current_amd64.deb
-    rm -f $CHROME_DIR/data.tar.xz
-fi
-
-# Verify installation of Chrome
-if [ -f "$CHROME_DIR/google-chrome" ]; then
-    echo "Chrome installed successfully"
-else
-    echo "Chrome installation failed"
-    exit 1
-fi
-
-# Download and install ChromeDriver
-if [ $RENDER ]; then
-    echo "Installing ChromeDriver for Render.com"
-    CHROME_VERSION=$($CHROME_DIR/google-chrome --version | awk '{print $3}' | cut -d '.' -f 1)
-    CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-    wget -N "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" -P $CHROMEDRIVER_DIR
-    unzip $CHROMEDRIVER_DIR/chromedriver_linux64.zip -d $CHROMEDRIVER_DIR
-    chmod +x $CHROMEDRIVER_DIR/chromedriver
-    rm $CHROMEDRIVER_DIR/chromedriver_linux64.zip
-fi
-
-# Verify installation of ChromeDriver
-if [ -f "$CHROMEDRIVER_DIR/chromedriver" ]; then
-    echo "ChromeDriver installed successfully"
-else
-    echo "ChromeDriver installation failed"
-    exit 1
-fi
+# Install Python dependencies
+pip install -r requirements.txt
