@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 
-# Set the working directory to the root of the repository
+# Move to the root of the repository
 cd "$(dirname "$0")"
+
+# Ensure we are in the correct directory
+echo "Current directory: $(pwd)"
+echo "Listing files in the current directory:"
+ls -la
+
+if [ -f requirements.txt ]; then
+    echo "Found requirements.txt in $(pwd)"
+else
+    echo "requirements.txt not found in $(pwd)"
+    exit 1
+fi
 
 # Install Chrome
 mkdir -p /opt/render/chrome
@@ -18,9 +30,12 @@ rm /opt/render/chromedriver/chromedriver_linux64.zip
 mv /opt/render/chromedriver/chromedriver /opt/render/chrome/
 chmod 0755 /opt/render/chrome/chromedriver
 
+# Go back to the root of the repository
+cd "$(dirname "$0")"
+
 # Check if requirements.txt exists
 if [ -f requirements.txt ]; then
-    # Install Python dependencies
+    echo "Installing Python dependencies"
     pip install -r requirements.txt
 else
     echo "ERROR: requirements.txt not found."
