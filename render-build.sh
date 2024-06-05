@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Set the working directory to the root of the repository
+cd "$(dirname "$0")"
+
 # Install Chrome
 mkdir -p /opt/render/chrome
 cd /opt/render/chrome
